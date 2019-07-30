@@ -1,0 +1,289 @@
+fileFormatVersion: 2
+guid: 8961abac4540c67408ae557b274d8638
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: ________
+    100002: //RootNode
+    100004: CyberPod_BODY___2
+    100006: CyberPod_BODY___4____3
+    100008: CyberPod_BODY___5____4
+    100010: CyberPod_BODY___5_____2____21
+    100012: CyberPod_BODY____1
+    100014: CyberPod_BODY____11
+    100016: CyberPod_BODY____2___3
+    100018: CyberPod_BODY____2_____1____2
+    100020: CyberPod_Gun-SPin___1
+    100022: CyberPod_Gun-SPin____1
+    100024: CyberPod_Gun-SPin____3
+    100026: CyberPod_Gun-SPin_______2_0
+    100028: CyberPod_Gun-SPin_______2_1
+    100030: CyberPod_Gun-SPin_______2_2
+    100032: CyberPod_Gun-SPin_______2_3
+    100034: CyberPod_Gun-SPin_______2_4
+    100036: CyberPod_Gun-SPin_______2_5
+    100038: CyberPod_Gun-SPin_______2_6
+    100040: CyberPod_Gun-SPin_______2_7
+    400000: ________
+    400002: //RootNode
+    400004: CyberPod_BODY___2
+    400006: CyberPod_BODY___4____3
+    400008: CyberPod_BODY___5____4
+    400010: CyberPod_BODY___5_____2____21
+    400012: CyberPod_BODY____1
+    400014: CyberPod_BODY____11
+    400016: CyberPod_BODY____2___3
+    400018: CyberPod_BODY____2_____1____2
+    400020: CyberPod_Gun-SPin___1
+    400022: CyberPod_Gun-SPin____1
+    400024: CyberPod_Gun-SPin____3
+    400026: CyberPod_Gun-SPin_______2_0
+    400028: CyberPod_Gun-SPin_______2_1
+    400030: CyberPod_Gun-SPin_______2_2
+    400032: CyberPod_Gun-SPin_______2_3
+    400034: CyberPod_Gun-SPin_______2_4
+    400036: CyberPod_Gun-SPin_______2_5
+    400038: CyberPod_Gun-SPin_______2_6
+    400040: CyberPod_Gun-SPin_______2_7
+    2300000: ________
+    2300002: CyberPod_BODY___2
+    2300004: CyberPod_BODY___4____3
+    2300006: CyberPod_BODY___5____4
+    2300008: CyberPod_BODY___5_____2____21
+    2300010: CyberPod_BODY____1
+    2300012: CyberPod_BODY____11
+    2300014: CyberPod_BODY____2___3
+    2300016: CyberPod_BODY____2_____1____2
+    2300018: CyberPod_Gun-SPin___1
+    2300020: CyberPod_Gun-SPin____1
+    2300022: CyberPod_Gun-SPin____3
+    2300024: CyberPod_Gun-SPin_______2_0
+    2300026: CyberPod_Gun-SPin_______2_1
+    2300028: CyberPod_Gun-SPin_______2_2
+    2300030: CyberPod_Gun-SPin_______2_3
+    2300032: CyberPod_Gun-SPin_______2_4
+    2300034: CyberPod_Gun-SPin_______2_5
+    2300036: CyberPod_Gun-SPin_______2_6
+    2300038: CyberPod_Gun-SPin_______2_7
+    3300000: ________
+    3300002: CyberPod_BODY___2
+    3300004: CyberPod_BODY___4____3
+    3300006: CyberPod_BODY___5____4
+    3300008: CyberPod_BODY___5_____2____21
+    3300010: CyberPod_BODY____1
+    3300012: CyberPod_BODY____11
+    3300014: CyberPod_BODY____2___3
+    3300016: CyberPod_BODY____2_____1____2
+    3300018: CyberPod_Gun-SPin___1
+    3300020: CyberPod_Gun-SPin____1
+    3300022: CyberPod_Gun-SPin____3
+    3300024: CyberPod_Gun-SPin_______2_0
+    3300026: CyberPod_Gun-SPin_______2_1
+    3300028: CyberPod_Gun-SPin_______2_2
+    3300030: CyberPod_Gun-SPin_______2_3
+    3300032: CyberPod_Gun-SPin_______2_4
+    3300034: CyberPod_Gun-SPin_______2_5
+    3300036: CyberPod_Gun-SPin_______2_6
+    3300038: CyberPod_Gun-SPin_______2_7
+    4300000: ________
+    4300002: CyberPod_BODY___2
+    4300004: CyberPod_BODY___4____3
+    4300006: CyberPod_BODY___5____4
+    4300008: CyberPod_BODY___5_____2____21
+    4300010: CyberPod_BODY____1
+    4300012: CyberPod_BODY____11
+    4300014: CyberPod_BODY____2___3
+    4300016: CyberPod_BODY____2_____1____2
+    4300018: CyberPod_Gun-SPin___1
+    4300020: CyberPod_Gun-SPin____1
+    4300022: CyberPod_Gun-SPin____3
+    4300024: CyberPod_Gun-SPin_______2_0
+    4300026: CyberPod_Gun-SPin_______2_1
+    4300028: CyberPod_Gun-SPin_______2_2
+    4300030: CyberPod_Gun-SPin_______2_3
+    4300032: CyberPod_Gun-SPin_______2_4
+    4300034: CyberPod_Gun-SPin_______2_5
+    4300036: CyberPod_Gun-SPin_______2_6
+    4300038: CyberPod_Gun-SPin_______2_7
+    2186277476908879412: ImportLogs
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_BODY___2Mat
+    second: {fileID: 2100000, guid: fb6cca8426322fa4b980a1e29afcc8ce, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_BODY___4____3Mat
+    second: {fileID: 2100000, guid: b2118f1160adf664e959b8de40078b4b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_BODY___5____4Mat
+    second: {fileID: 2100000, guid: 04783352003e664418519ccad238dcd5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_BODY___5_____2____21Mat
+    second: {fileID: 2100000, guid: e218c39caf109b846bd5d0891aa20682, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_BODY____11Mat
+    second: {fileID: 2100000, guid: 92ebf7c300bf1e443b1dad12d89c6950, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_BODY____1Mat
+    second: {fileID: 2100000, guid: 773061dc113e7c84b86e26d20fcf3844, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_BODY____2___3Mat
+    second: {fileID: 2100000, guid: 0fa13644636b52648aebdb77eb149645, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_BODY____2_____1____2Mat
+    second: {fileID: 2100000, guid: a3a017db71ba9774499e451c73d9107b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin___1Mat
+    second: {fileID: 2100000, guid: 298e34fd8e234a947bc052604119ac4e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin____1Mat
+    second: {fileID: 2100000, guid: e7cdfe45695e58b42936d006847f053e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin____3Mat
+    second: {fileID: 2100000, guid: a41da82f3c8c97e47b61795ee6ffadc7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin_______2_0Mat
+    second: {fileID: 2100000, guid: 86ee75d839c924640845f7a690b22e13, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin_______2_1Mat
+    second: {fileID: 2100000, guid: 653fc93fd43f1cc49881aec870878a16, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin_______2_2Mat
+    second: {fileID: 2100000, guid: 6e61ccee02ddd9b49a64100dce7c079a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin_______2_3Mat
+    second: {fileID: 2100000, guid: 31daebf7faacf20449df3d3170dd27e4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin_______2_4Mat
+    second: {fileID: 2100000, guid: cd3a250894c877648a7ae7d84e3b4bdf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin_______2_5Mat
+    second: {fileID: 2100000, guid: 17c3f91b7cd465949b6e478ba9febc38, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin_______2_6Mat
+    second: {fileID: 2100000, guid: 7de448d3277db6c46a3a4d26eff9adf5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CyberPod_Gun-SPin_______2_7Mat
+    second: {fileID: 2100000, guid: 4c46a11a48537f1438b31ce686dcb7d7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ________Mat
+    second: {fileID: 2100000, guid: db2e2beeed7525f47a618f0609c3e984, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
