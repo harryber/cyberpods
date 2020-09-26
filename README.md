@@ -1,2 +1,2 @@
 # cyberpods
-Multiplayer Bind of Isaac lul
+Obsolete -- see "cyberpods-new"
