@@ -37,12 +37,14 @@ public class GUIScript : NetworkBehaviour {
     public PlayerProperties localPlayer;
     private bool buttonActive;
     bool countdown = false;
+    public bool allready = false;
     int countTime = 0;
 
     private float number;
     void Start()
     {
         buttonText.text = "READY";
+        DontDestroyOnLoad(gameObject);
     }
 
     [Server]
@@ -76,7 +78,7 @@ public class GUIScript : NetworkBehaviour {
     {
         playerInfoList = new List<PlayerInfo>(array);
         playersConnected = array.Length;
-        if (isServer) RpcSeed(UnityEngine.Random.Range(Int32.MinValue, Int32.MaxValue));
+        //if (isServer) RpcSeed(UnityEngine.Random.Range(Int32.MinValue, Int32.MaxValue));
         playersReady = 0;
         foreach (var player in playerInfoList)
         {
@@ -89,24 +91,32 @@ public class GUIScript : NetworkBehaviour {
     [ClientRpc]
     void RpcSeed(int seed)
     {
+        GameObject.Find("RandomSeed").GetComponent<RandomSeed>().seed = seed;
         UnityEngine.Random.InitState(seed);
         number = UnityEngine.Random.value;
-        GameObject.Find("RandomSeed").GetComponent<RandomSeed>().seed = seed;
+        
     }
 
 
     void Update()
     {
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            gameObject.GetComponent<Canvas>().enabled = false;
+        }
+
         if (isServer)
         {
-            playersConnected = NetworkServer.connections.Count;
+            playersConnected = playerInfoList.Count;
 
 
         }
         
 
-        if (playersReady == playersConnected && playersConnected > 0)
+        if (playersReady == playersConnected && playersReady > 0 && !allready)
         {
+            allready = true;
+            if (isServer) RpcSeed(UnityEngine.Random.Range(Int32.MinValue, Int32.MaxValue));
             StartCoroutine("ChangeScene", 3);
         }
 
@@ -128,7 +138,16 @@ public class GUIScript : NetworkBehaviour {
             yield return new WaitForSeconds(1);
         }
         countdown = false;
+        if (buttonActive == true) ReadyUp();
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            player.GetComponent<PlayerProperties>().playerHealth = 1000;
+            player.GetComponent<PlayerProperties>().hpPercent = 1000;
+            player.GetComponent<PlayerProperties>().isSpectator = false;
+        }
         SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        buttonActive = false;
     }
 
     public void ReadyUp()
@@ -152,24 +171,58 @@ public class GUIScript : NetworkBehaviour {
      
     }
 
-    private void OnGUI()
+    public void LeaveLobby()
     {
-        GUIStyle centeredText = new GUIStyle();
-        centeredText.alignment = TextAnchor.MiddleCenter;
+        if (isServer)
+        {
+            //do something
+        }
+        else localPlayer.PlayerLeaveLobby();
+
+        NetworkManager.singleton.gameObject.GetComponent<NetDiscovery>().showButton = true;
+    }
+
+    [ClientRpc]
+    public void RpcLeaveLobby(string name)
+    {
         for (int p = 0; p < playerInfoList.Count; p++)
         {
-            if (playerInfoList[p].ready)
+            if (playerInfoList[p].name == name)
             {
-                GUI.color = Color.green;
+                playerInfoList.RemoveAt(p);
+                break;
             }
-            else
-            {
-                GUI.color = Color.white;
-            }
-            GUI.Box(new Rect(Screen.width/2 - 150, 40 * (p+1), 300, 30), playerInfoList[p].name);
         }
-        if (countdown) GUI.Label(new Rect(50, Screen.height - 100, 300, 50), countTime.ToString());
-        GUI.Label(new Rect(50, Screen.height - 50, 300, 50), number.ToString());
+        if (localPlayer.playerName == name) NetworkManager.singleton.StopClient();
+    }
+
+    private void OnGUI()
+    {
+        if (GetComponent<Canvas>().enabled)
+        {
+            GUIStyle centeredText = new GUIStyle();
+            centeredText.alignment = TextAnchor.MiddleCenter;
+            for (int p = 0; p < playerInfoList.Count; p++)
+            {
+                if (playerInfoList[p].ready)
+                {
+                    GUI.color = Color.green;
+                }
+                else
+                {
+                    GUI.color = Color.white;
+                }
+                GUI.Box(new Rect(Screen.width / 2 - 150, 40 * (p + 1), 300, 30), playerInfoList[p].name);
+            }
+            if (countdown) GUI.Label(new Rect(50, Screen.height - 100, 300, 50), countTime.ToString());
+            GUI.Label(new Rect(50, Screen.height - 50, 300, 50), GameObject.Find("RandomSeed").GetComponent<RandomSeed>().seed.ToString());
+        }
+        
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
     private Rect RectPercent(float fromTop, float height, float fromSides)

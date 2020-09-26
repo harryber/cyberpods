@@ -15,7 +15,6 @@ public class PlayerProperties : NetworkBehaviour
     public float mvmtSpeed;
     public float bulletSpeed;
 
-    [SyncVar]
     public float playerHealth = 1000;
 
     public float reloadTime = .5f;
@@ -34,6 +33,8 @@ public class PlayerProperties : NetworkBehaviour
     public float bigAtkSpeedBonus;
     public float bigBSpeedBonus;
     public float bigHealthKitBonus;
+
+
 
     public Rigidbody rb;
     public Vector3 topleft;
@@ -63,6 +64,8 @@ public class PlayerProperties : NetworkBehaviour
     public Material chosenMaterial;
     public static List<Material> availableMaterials = new List<Material>();
 
+    public GameObject cyberpodVisuals;
+
     public Rigidbody clone;
     public Rigidbody bullet;
     public GameObject GunShot;
@@ -76,7 +79,7 @@ public class PlayerProperties : NetworkBehaviour
     public float ASpeed;
     public float BSpeed;
     public float Damage;
-
+    public float spectatorSpeed;
 
 
     public float multiplier = 1;
@@ -89,6 +92,8 @@ public class PlayerProperties : NetworkBehaviour
     public GameObject floatingHealth;
 
     public bool[] disableMovement;
+
+    public bool isSpectator;
 
     private float magicNumber;
     private float magicNumberHealth;
@@ -108,7 +113,7 @@ public class PlayerProperties : NetworkBehaviour
     private int numCollected = 0;
     private float[] powerupPercent;
     private int[] totalPowerups;
-    private float hpPercent = 1f;
+    public float hpPercent = 1f;
     private float previousHpPercent = 1f;
     private float previousHpStored = 1f;
     private float[] powerupDuration;
@@ -117,13 +122,21 @@ public class PlayerProperties : NetworkBehaviour
     private int pcount;
     private bool sprinting = false;
     public float invokeRepeatRate = 0.5f;
+    public GameObject gameCanvas;
+
+
 
     //Transferred from the old PlayerLobby Script
     public string playerName;
-    private GUIScript canvas;
+    public GUIScript canvas;
 
+
+
+
+   
     void Start()
     {
+        
         panels = new GameObject[3];
         DontDestroyOnLoad(gameObject);
 
@@ -131,7 +144,7 @@ public class PlayerProperties : NetworkBehaviour
         playerID = server.GetComponent<reallyimportantplayerIDscript>().playerCount;
         if (isLocalPlayer)
         {
-                   
+
             RoomProperties.localPlayer = gameObject;
             //CmdChooseColor();
         }
@@ -139,9 +152,10 @@ public class PlayerProperties : NetworkBehaviour
         //Transferred from the old PlayerLobby Script
         if (SceneManager.GetActiveScene().name == "Menu")
         {
-            canvas = GameObject.Find("Canvas").GetComponent<GUIScript>();
+            canvas = GameObject.Find("MenuCanvas").GetComponent<GUIScript>();
             if (isLocalPlayer)
             {
+                print("I MADE IT YES");
                 canvas.localPlayer = this;
                 playerName = playerID.ToString();
                 CmdSetName(playerName);
@@ -166,6 +180,8 @@ public class PlayerProperties : NetworkBehaviour
         hpPanel = GameObject.FindGameObjectsWithTag("HPPan");
         colorHealth = new GameObject[hpPanel.Length];
 
+        isSpectator = false;
+
 
         if (isLocalPlayer)
         {
@@ -175,8 +191,8 @@ public class PlayerProperties : NetworkBehaviour
             magicNumber = panels[0].transform.GetChild(1).GetComponent<RectTransform>().localScale.y;
             magicNumberHealth = hpPanel[0].transform.GetChild(0).GetComponent<RectTransform>().localScale.x;
             magicNumberWhite = hpPanel[0].transform.GetChild(1).GetComponent<RectTransform>().localScale.x;
-            
-           
+
+
             colorPanels = new GameObject[panels.Length];
             disableMovement = new bool[4];
             triggers = new GameObject[4];
@@ -193,10 +209,10 @@ public class PlayerProperties : NetworkBehaviour
             {
                 colorPanels[i] = panels[i].transform.GetChild(2).gameObject;
                 highlightPanels[i] = panels[i].transform.GetChild(0).gameObject;
-              
+
                 powerupPercent[i] = 0;
             }
-            
+
         }
 
         currPowerups = new PowerupType[panels.Length];
@@ -204,12 +220,12 @@ public class PlayerProperties : NetworkBehaviour
         {
             currPowerups[i] = PowerupType.none;
         }
-            
+
         if (!isLocalPlayer)
         {
             magicNumberHealth = positionMarker.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<RectTransform>().localScale.x;
             magicNumberWhite = positionMarker.transform.GetChild(0).GetChild(0).GetChild(1).GetComponent<RectTransform>().localScale.x;
-            
+
             colorHealth[0] = positionMarker.transform.GetChild(0).GetChild(0).GetChild(2).gameObject;
             whitePanelHealth = positionMarker.transform.GetChild(0).GetChild(0).GetChild(1).gameObject;
         }
@@ -249,10 +265,10 @@ public class PlayerProperties : NetworkBehaviour
     }
 
     [Command]
-    void CmdSendInfo(PlayerInfo newInfo)
+    public void CmdSendInfo(PlayerInfo newInfo)
     {
         print(newInfo);
-
+        print("canvas " + canvas);
         canvas.AddPlayer(newInfo);
     }
 
@@ -271,16 +287,22 @@ public class PlayerProperties : NetworkBehaviour
 
     void Update()
     {
-      
+        
+
+
+
+        if (!isSpectator) Camera.main.transform.position = new Vector3(Camera.main.transform.position.x, 35, Camera.main.transform.position.z);
+
         transform.position = new Vector3(transform.position.x, 5, transform.position.z);
         positionMarker.transform.position = player.transform.position;
+        positionMarker.transform.rotation = new Quaternion(0, 0, 0, 0);
         if (SceneManager.GetActiveScene().name == "Game")
         {
             hpPercent = (playerHealth / 1000);
             //HP
             colorHealth[0].transform.localScale = new Vector3(hpPercent * magicNumberHealth, .2f, 1);
 
-            if (hpPercent != previousHpPercent && !coroutineRunning)
+            if (hpPercent != previousHpPercent && !coroutineRunning && hpPercent > 0)
             {
 
                 previousHpStored = previousHpPercent;
@@ -289,7 +311,7 @@ public class PlayerProperties : NetworkBehaviour
 
             previousHpPercent = playerHealth / 1000;
         }
-        
+
 
         if (isLocalPlayer && SceneManager.GetActiveScene().name == "Game")
         {
@@ -318,7 +340,7 @@ public class PlayerProperties : NetworkBehaviour
                     lastPowerupPressed = 2;
                 }
 
-              
+
                 if (lastPowerupPressed < currPowerups.Length) currentPowerup = currPowerups[lastPowerupPressed];
                 for (int i = 0; i < currPowerups.Length; i++)
                 {
@@ -326,15 +348,15 @@ public class PlayerProperties : NetworkBehaviour
                     {
                         highlightPanels[i].GetComponent<Image>().enabled = true;
                     }
-                    
+
                 }
 
                 usingPowerup = Input.GetButton("Jump");
                 pcount = totalPowerups[(int)currPowerups[lastPowerupPressed]];
                 if (usingPowerup)
                 {
-                   
-                    
+
+
                     if (pcount == 1)
                     {
                         multiplier = 1f;
@@ -356,12 +378,12 @@ public class PlayerProperties : NetworkBehaviour
                         {
                             powerupPercent[i] -= Time.deltaTime / powerupDuration[i];
                         }
-                        
+
                     }
-                    
+
 
                 }
-                
+
                 //reset powerup slot to null if run out of powerup
                 for (int i = 0; i < powerupPercent.Length && i < currPowerups.Length; i++)
                 {
@@ -381,33 +403,33 @@ public class PlayerProperties : NetworkBehaviour
 
                 if (Input.GetButtonDown("q"))
                 {
-                    for (int i = 0; i< colorPanels.Length; i++)
+                    for (int i = 0; i < colorPanels.Length; i++)
                     {
                         if (i == lastPowerupPressed)
                         {
                             powerupPercent[i] = 0;
                         }
-                        
+
                     }
-                   
+
                 }
-                
-            
+
+
                 for (int i = 0; i < colorPanels.Length; i++)
                 {
                     colorPanels[i].transform.localScale = new Vector3(0.008f, powerupPercent[i] * magicNumber, 1);
                 }
-                
-                
-                
+
+
+
             }
 
-            catch(Exception x)
+            catch (Exception x)
             {
                 print(x);
             }
 
-            
+
             if (teleport)
             {
                 rb.isKinematic = true;
@@ -449,11 +471,11 @@ public class PlayerProperties : NetworkBehaviour
                 {
                     usingPowerup = false;
                     playerHealth = 1000;
-                    
+
                 }
                 else
                 {
-                    playerHealth += healthKitBonus * multiplier * Time.deltaTime;
+                    CmdChangeHealth(healthKitBonus * multiplier * Time.deltaTime);
                 }
             }
             else if (usingPowerup && currentPowerup == PowerupType.bigSpeed)
@@ -471,7 +493,7 @@ public class PlayerProperties : NetworkBehaviour
             }
             else if (usingPowerup && currentPowerup == PowerupType.bigBSpeed)
             {
-               
+
                 BSpeed = bulletSpeed + bulletSpeedBonus * bigMultiplier;
             }
 
@@ -481,13 +503,13 @@ public class PlayerProperties : NetworkBehaviour
                 {
                     usingPowerup = false;
                     playerHealth = 1000;
-                   
+
                 }
                 else
                 {
-                    playerHealth += bigHealthKitBonus * bigMultiplier * Time.deltaTime;
+                    CmdChangeHealth(bigHealthKitBonus * bigMultiplier * Time.deltaTime);
                 }
-                
+
             }
 
 
@@ -502,7 +524,7 @@ public class PlayerProperties : NetworkBehaviour
                 moveDirection.z = 1;
                 tiltV.x = 20;
             }
-            
+
             if (Input.GetButtonUp("w"))
             {
                 CmdPositionCorretions();
@@ -579,23 +601,23 @@ public class PlayerProperties : NetworkBehaviour
             //transform.position = new Vector3(transform.position.x, 5, transform.position.z);
 
             //shoot inputs
-            
-         /*   if (Input.GetButtonDown("up") || Input.GetButtonDown("left") || Input.GetButtonDown("down") || Input.GetButtonDown("right"))
-            {
-                shootTime = Time.time;
-            }*/
 
-            if (Input.GetButton("up")) 
+            /*   if (Input.GetButtonDown("up") || Input.GetButtonDown("left") || Input.GetButtonDown("down") || Input.GetButtonDown("right"))
+               {
+                   shootTime = Time.time;
+               }*/
+
+            if (Input.GetButton("up"))
             {
                 rotateV.y = 0;
                 CmdRotate(new Vector3(transform.InverseTransformDirection(tiltV).x, rotateV.y, transform.InverseTransformDirection(tiltV).z));
                 if (shootTime + ASpeed <= Time.time)
                 {
-                    
-                    CmdShoot(new Vector3(0, 0, 3f), new Vector3(0, 0, BSpeed), playerID, Damage, ASpeed);
+
+                    CmdShoot(new Vector3(0, 0, 3f), new Vector3(0, 0, BSpeed), playerID, Damage, ASpeed, rb.velocity, transform.position);
                     shootTime = Time.time;
                 }
-                
+
             }
             else if (Input.GetButton("down"))
             {
@@ -603,11 +625,11 @@ public class PlayerProperties : NetworkBehaviour
                 CmdRotate(new Vector3(transform.InverseTransformDirection(tiltV).x, rotateV.y, transform.InverseTransformDirection(tiltV).z));
                 if (shootTime + ASpeed <= Time.time)
                 {
-                    
-                    CmdShoot(new Vector3(0, 0, -3f), new Vector3(0, 0, BSpeed), playerID, Damage, ASpeed);
+
+                    CmdShoot(new Vector3(0, 0, -3f), new Vector3(0, 0, BSpeed), playerID, Damage, ASpeed, rb.velocity, transform.position);
                     shootTime = Time.time;
                 }
-                
+
             }
 
             else if (Input.GetButton("left"))
@@ -617,7 +639,7 @@ public class PlayerProperties : NetworkBehaviour
                 if (shootTime + ASpeed <= Time.time)
                 {
                     shootTime = Time.time;
-                    CmdShoot(new Vector3(-3f, 0, 0), new Vector3(0, 0, BSpeed), playerID, Damage, ASpeed);
+                    CmdShoot(new Vector3(-3f, 0, 0), new Vector3(0, 0, BSpeed), playerID, Damage, ASpeed, rb.velocity, transform.position);
                 }
             }
 
@@ -629,87 +651,109 @@ public class PlayerProperties : NetworkBehaviour
                 if (shootTime + ASpeed <= Time.time)
                 {
                     shootTime = Time.time;
-                    CmdShoot(new Vector3(3f, 0, 0), new Vector3(0, 0, BSpeed), playerID, Damage, ASpeed);
+                    CmdShoot(new Vector3(3f, 0, 0), new Vector3(0, 0, BSpeed), playerID, Damage, ASpeed, rb.velocity, transform.position);
                 }
             }
 
 
             if (playerHealth <= 0)
             {
-                CmdKill(player);
+                //CmdKill(player);
+                
+                CmdSpectatorMode(false);
             }
-        
 
 
 
 
-           
+
+
         }
     }
 
 
     // TAKE DMG WHEN HIT A WALL, PROB TAKE OUT LATER
-     public void OnCollisionEnter(Collision collision)
-     {
+    public void OnCollisionEnter(Collision collision)
+    {
         if (collision.gameObject.tag == "Player")
         {
             if (!sprinting)
             {
                 if (collision.gameObject.GetComponent<PlayerProperties>().sprinting)
                 {
-                    playerHealth -= collision.gameObject.GetComponent<PlayerProperties>().moveSpeed * crashDamageMultiplier;
+                    CmdChangeHealth(-collision.gameObject.GetComponent<PlayerProperties>().moveSpeed * crashDamageMultiplier);
                 }
 
             }
-            
-           
-            
+
+
+
         }
 
         else if (!sprinting)
         {
-            playerHealth -= 10;
+            //CmdChangeHealth(-50);
         }
-        
-     }
 
+    }
+
+    [Command]
     void CmdPositionCorretions()
     {
         print("HP BEFORE: " + playerHealth);
-        RpcPositionCorrections(transform.position, rb.velocity, playerHealth);
+        //RpcPositionCorrections(transform.position, rb.velocity, playerHealth);
     }
 
     [ClientRpc]
     void RpcPositionCorrections(Vector3 position, Vector3 velocity, float health)
     {
         rb.isKinematic = true;
-      //  print("RPC ALKFSJSAL:KFJL:KJ");
-       // playerHealth = health;
-       // transform.position = position;
+        //  print("RPC ALKFSJSAL:KFJL:KJ");
+        // playerHealth = health;
+        // transform.position = position;
         //rb.velocity = velocity;
-       // print("HP AFTER: " + playerHealth);
+        // print("HP AFTER: " + playerHealth);
         rb.isKinematic = false;
     }
+
+    public void ChangeHealth(float ChangeAmount)
+    {
+        playerHealth += ChangeAmount;
+    }
+
+    [Command]
+    public void CmdChangeHealth(float ChangeAmount)
+    {
+        RpcChangeHealth(ChangeAmount);
+    }
+
+    [ClientRpc]
+    public void RpcChangeHealth(float ChangeAmount)
+    {
+        playerHealth += ChangeAmount;
+    }
+
 
     IEnumerator lowerWhiteBar()
     {
         coroutineRunning = true;
 
-        yield return new WaitForSeconds(.3f);
-        for (int i = Mathf.RoundToInt(previousHpStored * 1000); i >= Mathf.RoundToInt(playerHealth) - 2; i -= 3)
+        yield return new WaitForSeconds(.5f);
+        for (int i = Mathf.RoundToInt(previousHpStored * 1000); i >= Mathf.RoundToInt(playerHealth) - 4; i -= 5)
         {
+            if (hpPercent <= 0 || SceneManager.GetActiveScene().name != "Game") break;
             whitePanelHealth.transform.localScale = new Vector3(i / 1000f * magicNumberWhite, .2f, 1);
             yield return new WaitForSeconds(0);
-            
+
         }
         coroutineRunning = false;
     }
 
-    public void TakeDamage(float damage)
+    /*public void TakeDamage(float damage)
     {
         playerHealth -= damage;
         print(playerHealth);
-    }
+    }*/
 
     //tells the server to run RpcMove
     [Command]
@@ -747,26 +791,30 @@ public class PlayerProperties : NetworkBehaviour
 
     //tells the server to run RpcShoot if you're allowed to shoot
     [Command]
-    void CmdShoot(Vector3 offset, Vector3 bulletV, int playerID, float Damage, float ASpeed)
+    void CmdShoot(Vector3 offset, Vector3 bulletV, int playerID, float Damage, float ASpeed, Vector3 Velocity, Vector3 Position)
     {
-            RpcShoot(offset, bulletV, playerID, Damage);
+        RpcShoot(offset, bulletV, playerID, Damage, Velocity, Position);
     }
 
     //all clients will run shoot function
     [ClientRpc]
-    void RpcShoot(Vector3 offset, Vector3 bulletV, int playerID, float Damage)
+    void RpcShoot(Vector3 offset, Vector3 bulletV, int playerID, float Damage, Vector3 Velocity, Vector3 Position)
     {
-        clone = Instantiate(bullet, transform.position + offset, transform.rotation) as Rigidbody;
-        clone.transform.localScale = new Vector3(Damage / 100, Damage / 100, Damage / 100);
-        clone.GetComponent<MeshRenderer>().material = chosenMaterial;
-        clone.GetComponent<BulletProperties>().shooterID = playerID;
-        clone.GetComponent<BulletProperties>().player = gameObject;
-        clone.GetComponent<BulletProperties>().playerProperties = this;
-        clone.GetComponent<BulletProperties>().bulletDamage = Damage;
-        clone.velocity = new Vector3(transform.TransformDirection(bulletV).x, 0, transform.TransformDirection(bulletV).z);
+        if (!isSpectator)
+        {
+            clone = Instantiate(bullet, Position + offset, transform.rotation) as Rigidbody;
+            clone.transform.localScale = new Vector3(Damage / 100, Damage / 100, Damage / 100);
+            clone.GetComponent<MeshRenderer>().material = chosenMaterial;
+            clone.GetComponent<BulletProperties>().shooterID = playerID;
+            clone.GetComponent<BulletProperties>().player = gameObject;
+            clone.GetComponent<BulletProperties>().playerProperties = this;
+            clone.GetComponent<BulletProperties>().bulletDamage = Damage;
+            clone.velocity = new Vector3(transform.TransformDirection(bulletV).x, 0, transform.TransformDirection(bulletV).z) + Velocity / 2;
 
-        GameObject gunShot = Instantiate(GunShot, transform.position, transform.rotation) as GameObject;
-        gunShot.transform.parent = transform;
+            GameObject gunShot = Instantiate(GunShot, transform.position, transform.rotation) as GameObject;
+            gunShot.transform.parent = transform;
+        }
+        
     }
 
     //tells the client to run RpcDestroy player if a player dies
@@ -782,24 +830,11 @@ public class PlayerProperties : NetworkBehaviour
         rb.isKinematic = true;
         target.GetComponent<Rigidbody>().isKinematic = true;
         target.transform.position = purgatory;
-        
-        
+
+
     }
-    
-/*
-    void Raycasts(Vector3 corner1, Vector3 corner2, Vector3 direction)
-    {
-        for (float t = 0; t <= 1; t += 1f/4)
-        {
-            RaycastHit hit;
-            Vector3 origin = Vector3.Lerp(corner1, corner2, t);
-            if (Physics.Raycast(origin, direction, out hit, 1f))
-            {
-                print("Hit");
-            }
-        }
-    }
-    */
+
+
     /*
     [Command]
     void CmdChooseColor()
@@ -828,7 +863,7 @@ public class PlayerProperties : NetworkBehaviour
     }
     */
 
-    
+
     public void PowerupCollected(Color coloR, PowerupType type)
     {
         if (isLocalPlayer)
@@ -842,7 +877,7 @@ public class PlayerProperties : NetworkBehaviour
                     {
                         powerupDuration[i] = 7;
                     }
-                
+
                     else
                     {
                         powerupDuration[i] = 5;
@@ -879,13 +914,13 @@ public class PlayerProperties : NetworkBehaviour
                     print(string.Join(",", Array.ConvertAll(currPowerups, x => x.ToString())));
                     powerupDuration[0] = 7;
                 }
-                
+
             }
-            
-            
+
+
             print(string.Join(",", Array.ConvertAll(totalPowerups, x => x.ToString())));
         }
-       
+
 
     }
 
@@ -897,4 +932,114 @@ public class PlayerProperties : NetworkBehaviour
             obj.GetComponent<MeshRenderer>().material = chosenMaterial;
         }
     }
+
+    [Command]
+    void CmdSpectatorMode(bool Enabled)
+    {
+        RpcSpectatorMode(Enabled);
+    }
+
+    [ClientRpc]
+    void RpcSpectatorMode(bool Enabled)
+    {
+        isSpectator = !Enabled;
+        hpPercent = 1;
+        player.transform.GetChild(1).gameObject.SetActive(Enabled);
+
+        player.GetComponent<BoxCollider>().enabled = Enabled;
+        
+        moveSpeed = spectatorSpeed;
+
+        if (!isLocalPlayer) positionMarker.transform.GetChild(0).gameObject.SetActive(Enabled);
+
+        player.transform.GetChild(0).gameObject.SetActive(Enabled);
+
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            whitePanelHealth.transform.localScale = new Vector3(magicNumberWhite, .2f, 1);
+            if (isLocalPlayer)
+            {
+                gameCanvas = GameObject.Find("Canvas");
+
+                foreach (Transform child in gameCanvas.transform)
+                {
+                    child.gameObject.SetActive(Enabled);
+                }
+                //gameCanvas.transform.GetChild(4).gameObject.SetActive(true);
+
+                Camera.main.transform.position = new Vector3(transform.position.x, 50, transform.position.z);
+            }
+        }
+
+  
+        
+
+    }
+    private void OnLevelWasLoaded(int level)
+    {
+        CmdSpectatorMode(true);
+
+        if (level == 0 && isLocalPlayer)
+        {
+            canvas = GameObject.Find("MenuCanvas").GetComponent<GUIScript>();
+            canvas.localPlayer = this;
+            print(canvas.localPlayer.playerName);
+            GameObject[] objects = Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[];
+
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (objects[i].name == "MenuCanvas")
+                {
+                    canvas = objects[i].GetComponent<GUIScript>();
+                    break;
+                }
+            }
+            print(canvas);
+            canvas.gameObject.SetActive(true);
+
+            //CmdSendInfo(new PlayerInfo(playerName));
+        }
+
+        if (level == 1)
+        {
+           
+            for (int i = 0; i < panels.Length; i++)
+            {
+                currPowerups[i] = PowerupType.none;
+            }
+            
+        }
+    }
+
+    
+    public void PlayerLeaveLobby()
+    {
+        CmdPlayerLeaveLobby();
+    }
+
+    [Command]
+    public void CmdPlayerLeaveLobby()
+    {
+        canvas.RpcLeaveLobby(playerName);
+    }
+
+    private void OnApplicationQuit()
+    {
+        print("QUIT");
+
+        if (isLocalPlayer && isServer)
+        {
+            NetworkManager.singleton.StopHost();
+        }
+        else
+        {
+            NetworkManager.singleton.StopClient();
+        }
+        
+    }
+    private void OnPlayerDisconnected(NetworkIdentity player)
+    {
+        print("player: " + player + " disconnected");
+    }
+
 }

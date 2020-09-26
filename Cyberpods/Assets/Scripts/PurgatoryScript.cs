@@ -7,15 +7,17 @@ public class PurgatoryScript : MonoBehaviour {
 
     public Vector3 bottomLeft;
     public Vector3 topRight;
+    public GameObject canvas;
 
     private GameObject[] players;
-    private int numPlayersInRoom;
+    private int numPlayersDead;
     private Rect boundaries;
     private bool countdown;
     private int countTime = 0;
     // Use this for initialization
     void Start ()
     {
+        print("PurgatoryStart");
         players = GameObject.FindGameObjectsWithTag("Player");
         boundaries = new Rect(transform.position.x + bottomLeft.x, transform.position.z + bottomLeft.z, topRight.x - bottomLeft.x, topRight.z - bottomLeft.z);
     }
@@ -23,20 +25,23 @@ public class PurgatoryScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        numPlayersInRoom = 0;
+        numPlayersDead = 0;
         foreach (var player in players)
         {
-            if (boundaries.Contains(new Vector2(player.transform.position.x, player.transform.position.z)))
+            PlayerProperties playerProperties = player.gameObject.GetComponent<PlayerProperties>();
+            print("player" + playerProperties.playerID + " health:" + playerProperties.playerHealth);
+            print("player" + playerProperties.playerID + " spec:" + playerProperties.isSpectator);
+            if (player.gameObject.GetComponent<PlayerProperties>().isSpectator)
             {
-                numPlayersInRoom++;
+                print("found spectator");
+                numPlayersDead++;
             }
         }
 
         if (players.Length != 1)
         {
-            if (numPlayersInRoom >= players.Length - 1)
+            if (numPlayersDead >= players.Length - 1)
             {
-                print("DEATH");
                 StartCoroutine("ChangeScene", 0);
             }
         }
@@ -55,7 +60,13 @@ public class PurgatoryScript : MonoBehaviour {
             yield return new WaitForSeconds(1);
         }
         countdown = false;
-        print("ASFOIJASLFIJAPFJOAGJLEA:KJ");
+
+        print(numPlayersDead);
+        canvas = GameObject.Find("MenuCanvas");
+        canvas.GetComponent<GUIScript>().allready = false;
+        canvas.GetComponent<Canvas>().enabled = true;
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
-    }
+    }   
+
+   
 }

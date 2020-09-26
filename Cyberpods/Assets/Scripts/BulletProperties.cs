@@ -26,7 +26,7 @@ public class BulletProperties : MonoBehaviour
         {
             if (other.gameObject.GetComponent<PlayerProperties>().playerID != shooterID)
             {
-                other.GetComponent<PlayerProperties>().TakeDamage(bulletDamage);
+                other.GetComponent<PlayerProperties>().ChangeHealth(-bulletDamage);
                 Destroy(gameObject);
             }
             

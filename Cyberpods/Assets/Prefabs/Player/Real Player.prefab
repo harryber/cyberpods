@@ -557,7 +557,7 @@ GameObject:
   - component: {fileID: 114883513035445602}
   - component: {fileID: 114289820084299968}
   m_Layer: 8
-  m_Name: Canvas
+  m_Name: MovingCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1927,6 +1927,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 447dfaa3c55626b4098c69af0026dc4d, type: 2}
   - {fileID: 2100000, guid: 02b914b67f29a044cb4f8f297b2cabaa, type: 2}
   chosenMaterial: {fileID: 2100000, guid: 443ba9194af4fb344a12909aa6f060f6, type: 2}
+  cyberpodVisuals: {fileID: 0}
   clone: {fileID: 54000012770826604, guid: f8ecb92018cdffb40ac5ba706dd10c12, type: 2}
   bullet: {fileID: 54000012770826604, guid: f8ecb92018cdffb40ac5ba706dd10c12, type: 2}
   GunShot: {fileID: 1235940232551486, guid: 27b35784878752a48a0268e74ad82325, type: 2}
@@ -1938,16 +1939,21 @@ MonoBehaviour:
   ASpeed: 0
   BSpeed: 0
   Damage: 0
+  spectatorSpeed: 50
   multiplier: 0
   bigMultiplier: 0
   crashDamageMultiplier: 2
   whitePanelHealth: {fileID: 0}
   floatingHealth: {fileID: 1423725176988130}
   disableMovement: 
+  isSpectator: 0
   usingPowerup: 0
   currentPowerup: 0
+  hpPercent: 1
   invokeRepeatRate: 0.07
+  gameCanvas: {fileID: 0}
   playerName: 
+  canvas: {fileID: 0}
 --- !u!114 &114000012010075700
 MonoBehaviour:
   m_ObjectHideFlags: 1

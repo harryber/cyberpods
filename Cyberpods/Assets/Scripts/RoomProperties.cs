@@ -35,13 +35,12 @@ public class RoomProperties : MonoBehaviour {
 
     void Start()
     {
-       
+
         SetupRoom();
         players = GameObject.FindGameObjectsWithTag("Player");
         boundaries = new Rect(transform.position.x + bottomLeft.x, transform.position.z + bottomLeft.z, topRight.x - bottomLeft.x, topRight.z - bottomLeft.z);
 
     }
-
     private void Update()
     {
         numPlayersInRoom = 0;
@@ -49,7 +48,11 @@ public class RoomProperties : MonoBehaviour {
         {
             if (boundaries.Contains(new Vector2(player.transform.position.x, player.transform.position.z)))
             {
-                numPlayersInRoom++;
+                if (!player.gameObject.GetComponent<PlayerProperties>().isSpectator)
+                {
+                    numPlayersInRoom++;
+                }
+                
             }
         }
 
@@ -109,7 +112,7 @@ public class RoomProperties : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == localPlayer)
+        if (other.gameObject == localPlayer && !other.GetComponent<PlayerProperties>().isSpectator)
         {
             Vector3 target = new Vector3(transform.position.x, 35, transform.position.z);
             if (Camera.main.transform.position != target && !lerping) StartCoroutine("MoveCamera", target);
@@ -127,6 +130,7 @@ public class RoomProperties : MonoBehaviour {
         }
         lerping = false;
     }
+
 
     
 }
