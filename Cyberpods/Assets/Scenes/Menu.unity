@@ -1148,7 +1148,6 @@ MonoBehaviour:
   readyButton: {fileID: 956444993}
   readyText: {fileID: 435597339}
   buttonText: {fileID: 1495311129}
-  netdisc: {fileID: 1775062178}
   localPlayer: {fileID: 0}
   allready: 0
 --- !u!114 &1353969891
@@ -1421,6 +1420,8 @@ MonoBehaviour:
   matchMaker: {fileID: 0}
   showButton: 1
   broadcast: 
+  data: []
+  mrcvd: 0
   address: 
   port: 0
 --- !u!4 &1775062179
@@ -1442,7 +1443,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1775062177}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 227461547, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
